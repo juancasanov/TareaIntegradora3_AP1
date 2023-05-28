@@ -7,9 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
+import java.util.Random;
 
 public class Controller {
     
+    private Random random = new Random();
     private ArrayList<User> users;
     private ArrayList<BibliographicProduct> products;
     private ArrayList<Transaction> bills;
@@ -36,10 +38,11 @@ public class Controller {
     }
 
     /**
-     * @param userType
-     * @param name
-     * @param id
-     * @return
+     * Description: register boolean allows to register both regular and premium users.
+     * @param userType int is the selected usert type.
+     * @param name String is the user name.
+     * @param id String is the user identification.
+     * @return true if user is registered or false is it is not.
      */
     public boolean registerUser(int userType, String name, String id) {
 
@@ -60,7 +63,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getUserList String shows the list of users registered.
+     * @return msg String user list.
      */
     public String getUserList() {
 
@@ -75,19 +79,20 @@ public class Controller {
     }
 
     /**
-     * @param productType
-     * @param id
-     * @param name
-     * @param pages
-     * @param review
-     * @param day
-     * @param month
-     * @param year
-     * @param selection
-     * @param url
-     * @param price
-     * @param periodicity
-     * @return
+     * Description: registerBibliographicalProduct boolean allows to register both book and magazine products.
+     * @param productType int is the selection of the product type.
+     * @param id String is the product hex identification code. 
+     * @param name String is the product name.
+     * @param pages int is the number of pages.
+     * @param review String is the book review.
+     * @param day int is the day of the publication date.
+     * @param month int is the month of the publication date.
+     * @param year  int is the year of the publication date.
+     * @param selection int is the selection of both book genre or magazine category.
+     * @param url   String is the front page URL.
+     * @param price double is the sell or subcription price.
+     * @param periodicity int is the mamgazine periodicity.
+     * @return true if the product is registered, false if it is not.
      */
     public boolean registerBibliographicProduct(int productType, String id, String name, int pages, String review, int day, int month, int year, int selection, String url, double price, int periodicity) {
 
@@ -149,7 +154,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getProductList String shows the list of products registered.
+     * @return msg String is the products list.
      */
     public String getProductList() {
 
@@ -171,8 +177,9 @@ public class Controller {
     }
 
     /**
-     * @param position
-     * @return
+     * Description: deleteBibliographicalProduct boolean allows to delete a bilbiographical product.
+     * @param position int product position in the arratlist.
+     * @return true
      */
     public boolean deleteBibliographicalProduct(int position) {
 
@@ -182,8 +189,9 @@ public class Controller {
     }
 
     /**
-     * @param position
-     * @return
+     * Description: getBibliographicalType int shows if a product selected is either a book or a magazine.
+     * @param position int product position in the arraylist.
+     * @return type is the product type.
      */
     public int getBibliographicProductType(int position) {
 
@@ -201,10 +209,11 @@ public class Controller {
     }
 
     /**
-     * @param productPosition
-     * @param valueToChange
-     * @param newValue
-     * @return
+     * Description: modifyBibliographicalProduct boolean allows to change an atribute of a product.
+     * @param productPosition int product position.
+     * @param valueToChange int refers to the attribute to change.
+     * @param newValue String the new attribute value.
+     * @return true if the attribute was change, false it it was not.
      */
     public boolean modifyBibliographicalProduct(int productPosition, int valueToChange, String newValue) {
 
@@ -347,7 +356,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getBookList String shows the book list within the products arraylist.
+     * @return  msg book list.
      */
     public String getBookList() {
 
@@ -364,7 +374,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: setCalendarFormat() allows to set the calentar formar to "dd/MM/yyyy"
+     * @return calendar formatted.
      */
     public String setCalendarFormat() {
 
@@ -376,9 +387,10 @@ public class Controller {
     }
 
     /**
-     * @param userPosition
-     * @param productPosition
-     * @return
+     * Description: purchaseABook allows to purchase a book.
+     * @param userPosition int user selected.
+     * @param productPosition int book selected.
+     * @return the purchase summary.
      */
     public String purchaseABook(int userPosition, int productPosition) {
 
@@ -425,7 +437,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getMagazineLit String shows the magazines within the products arraylist.
+     * @return magazine list.
      */
     public String getMagazineList() {
 
@@ -441,9 +454,10 @@ public class Controller {
     }
 
     /**
-     * @param userPosition
-     * @param productPosition
-     * @return
+     * Description: subscribeToMagazine String allows to subscribe to a magazine.
+     * @param userPosition int is the user selected.
+     * @param productPosition int is the magazine selected.
+     * @return the subcription plan detail.
      */
     public String subscribeToMagazine(int userPosition, int productPosition) {
 
@@ -490,8 +504,9 @@ public class Controller {
     }
 
     /**
-     * @param userPosition
-     * @return
+     * Description: sortListDescending allows to organice the user librery by the publication date of the product.
+     * @param userPosition int is the user selected.
+     * @return the user library sorted descending.
      */
     public ArrayList<BibliographicProduct> sortListDescending(int userPosition) {
 
@@ -516,6 +531,11 @@ public class Controller {
                 }
             }
         } else if (users.get(userPosition) instanceof PremiumUser) {
+
+            for (int i = 0; i < ((PremiumUser)users.get(userPosition)).getLibrary().size(); i++) {
+                librarySorted.add(((PremiumUser)users.get(userPosition)).getLibrary().get(i));
+            }
+
             for (int i = 0; i < ((PremiumUser)users.get(userPosition)).getLibrary().size(); i++) {
                 for (int c = 0; c < ((PremiumUser)users.get(userPosition)).getLibrary().size(); c++) {
                     if (((PremiumUser)users.get(userPosition)).getLibrary().get(i) != null) {
@@ -533,9 +553,9 @@ public class Controller {
         return librarySorted;
     }
 
-    /**
-     * @param user
-     * @return
+    /** Description: fillMatrix String[][][] allows to fill a 5x5 matrix.
+     * @param user int user selected.
+     * @return a array of matrix with the user library.
      */
     public String[][][] fillMatrix(int user) {
 
@@ -568,9 +588,10 @@ public class Controller {
     }
 
     /**
-     * @param userPosition
-     * @param page
-     * @return
+     * Description: shoeUserCollection String shows the user library,
+     * @param userPosition int userSelected
+     * @param page int the postion of the array.
+     * @return a matrix with the user library.
      */
     public String showUserCollection(int userPosition, int page) {
 
@@ -597,12 +618,13 @@ public class Controller {
     }
 
     /**
-     * @param user
-     * @param page
-     * @param currentPage
-     * @param x
-     * @param y
-     * @return
+     * Description: readingSession String start a reading session.
+     * @param user int user selected.
+     * @param page int array position.
+     * @param currentPage int number of page being read.
+     * @param x int coordinate x of the matrix
+     * @param y int coordinate y of the matrix
+     * @return the reading Session menu.
      */
     public String readingSession(int user, int page, int currentPage, int x, int y) {
 
@@ -628,10 +650,12 @@ public class Controller {
 
                 } else if (id.equals(((PremiumUser)users.get(user)).getLibrary().get(i).getId())) {
                     session = "reading session in progress:\n Reading: " + ((PremiumUser)users.get(user)).getLibrary().get(i).getName() + "\nReading page " + currentPage + " of " + ((PremiumUser)users.get(user)).getLibrary().get(i).getTotalPages() + "\n";
-                    if (products.get(i) == ((PremiumUser)users.get(user)).getLibrary().get(i)) {
-                        products.get(i).addRedPage();
+                    for (int c = 0; c < products.size(); c++) {
+                        if (products.get(i) == ((PremiumUser)users.get(user)).getLibrary().get(i)) {
+                            products.get(i).addRedPage();
+                        }
                     }
-                }                
+                }               
             }
         }
 
@@ -639,8 +663,27 @@ public class Controller {
     }
 
     /**
-     * @param user
-     * @return
+     * Description: showAdds allows to display ads to regular users each 20 pages read.
+     * @param user user selected.
+     * @return random ad.
+     */
+    public String showAds( int user) {
+
+        String msg = "";
+
+        if (users.get(user) instanceof RegularUser) {
+            msg = Advertiseable.ads[(random.nextInt(Advertiseable.ads.length))] + "\n";
+        } else if (users.get(user) instanceof PremiumUser) {
+            msg = "";
+        }
+        
+        return msg;
+    }
+
+    /**
+     * Description: getUserMagazineSubscriptionList show the list of magazine asocieted to a user.
+     * @param user user selected
+     * @return magazine list.
      */
     public String getUserMagazineSubscriptionList(int user) {
         
@@ -664,9 +707,10 @@ public class Controller {
     }
 
     /**
-     * @param user
-     * @param magazine
-     * @return
+     * Description: cancelMagazineSubscription boolean allows to cancel a active subscription to a magazine.
+     * @param user int user selected.
+     * @param magazine int magazine selected
+     * @return true;
      */
     public boolean cancelMagazineSubscription(int user, int magazine) {
 
@@ -680,7 +724,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getBookPages shows the pages red of a book.
+     * @return pages read.
      */
     public int getBookRedPages() {
 
@@ -696,7 +741,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getMagazineRedPages int shows the pages red of a magazine.
+     * @return number of pages red.
      */
     public int getMagazineRedPages() {
 
@@ -712,7 +758,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getMostReadGenere String shows the most read genre and how many pages were read.
+     * @return message.
      */
     public String getMostReadGenre() {
 
@@ -744,7 +791,8 @@ public class Controller {
     }
 
     /**
-     * @return
+     * Description: getMostRedCategory String shows the most read magazine category and how many pages were read.
+     * @return message.
      */
     public String getMostReadCategory() {
 
@@ -773,5 +821,86 @@ public class Controller {
             category = MagazineCategory.VARIETIES + " (" + c + " pages read)";
         }
         return category;
+    }
+
+    /**
+     * Description: soldBooksByGenre shows how many book have been sold by each genre.
+     * @return number of books sold and total sales.
+     */
+    public String soldBooksByGenre() {
+        
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        double aTotal = 0;
+        double bTotal = 0;
+        double cTotal = 0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Book) {
+                if (((Book)products.get(i)).getGenre() == BookGenre.FANTASY) {
+                    a += ((Book)products.get(i)).getCopiesSold();
+                    aTotal += calculateTotalToPay(i);
+                } else if (((Book)products.get(i)).getGenre() == BookGenre.HISTORICAL_NOVEL) {
+                    b += ((Book)products.get(i)).getCopiesSold();
+                    bTotal += calculateTotalToPay(i);
+                } else if (((Book)products.get(i)).getGenre() == BookGenre.SCI_FI) {
+                    c += ((Book)products.get(i)).getCopiesSold();
+                    cTotal += calculateTotalToPay(i);
+                }
+            }
+        }
+
+        return "Book Genre: Fantasy\n  Copies sold: " + a + "\n  Total sales: $" + aTotal + "\nBook Genre: Historical Novel\n  Copies sold: " + b + "\n  Total sales $" + bTotal + "\nBook Genre: Sci-Fi\n  Copies sold: " + c + "\n  Total sales $" + cTotal;
+    }
+
+    /**
+     * Description: calculateTotalTopay double calculate the total sales of a book.
+     * @param book book selected.
+     * @return total sales.
+     */
+    public double calculateTotalToPay(int book) {
+
+        return ((Book)products.get(book)).getCopiesSold() * ((Book)products.get(book)).getPrice();
+    }
+
+    /**
+     * Description: activeMagazineSubcription shows the number of active subcriptions and the total gainede by category.
+     * @return message.
+     */
+    public String activeMagazineSubscriptions() {
+        
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        double aTotal = 0;
+        double bTotal = 0;
+        double cTotal = 0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Magazine) {
+                if (((Magazine)products.get(i)).getCategory() == MagazineCategory.DESIGN) {
+                    a += ((Magazine)products.get(i)).getActiveSubscriptions();
+                    aTotal += calculteTotalActiveSubsceiptions(a);
+                } else if (((Magazine)products.get(i)).getCategory() == MagazineCategory.SCIENTIFIC) {
+                    b += ((Magazine)products.get(i)).getActiveSubscriptions();
+                    bTotal += calculteTotalActiveSubsceiptions(a);
+                } else if (((Magazine)products.get(i)).getCategory() == MagazineCategory.VARIETIES) {
+                    c += ((Magazine)products.get(i)).getActiveSubscriptions();
+                    cTotal += calculteTotalActiveSubsceiptions(a);
+                }
+            }
+        }
+
+        return "Book Genre: Fantasy\n  Copies sold: " + a + "\n  Total sales: $" + aTotal + "\nBook Genre: Historical Novel\n  Copies sold: " + b + "\n  Total sales $" + bTotal + "\nBook Genre: Sci-Fi\n  Copies sold: " + c + "\n  Total sales $" + cTotal;
+    }
+
+    /**
+     * Description: calculateTotalActiveSubcription calculate the total paid by active subcription.
+     * @param magazine magazine selected.
+     * @return total to pay.
+     */
+    public double calculteTotalActiveSubsceiptions(int magazine) {
+        return ((Magazine)products.get(magazine)).getActiveSubscriptions() * ((Magazine)products.get(magazine)).getPrice();
     }
 }

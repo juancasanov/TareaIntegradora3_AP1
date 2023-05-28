@@ -379,9 +379,15 @@ public class Executable {
 
                     boolean flag1 = false;
                     int page1 = 0;
+                    int adsCount = 0;
 
                     while (!flag1) {
                         System.out.println(readXSystem.readingSession(user-1, page, page1, x, y));
+
+                        if (adsCount == 20) {
+                            adsCount = 0;
+                            System.out.println(readXSystem.showAds(user-1));
+                        }
 
                         System.out.println("Enter A to go to the next page");
                         System.out.println("Enter S to go to the previous page");
@@ -390,11 +396,13 @@ public class Executable {
 
                         if (selection1.toUpperCase().equals("A")) {
                             page1++;
+                            adsCount++;
                         } else if (selection1.toUpperCase().equals("S")) {
                             if (page1 == 0) {
                                 System.out.println("There is no previous page");
                             } else {
                                 page1--;
+                                adsCount++;
                             }
                         } else if (selection1.toUpperCase().equals("E")) {
                             flag1 = true;
@@ -459,6 +467,7 @@ public class Executable {
         System.out.println("Read pages of magazines " + readXSystem.getMagazineRedPages());
         System.out.println("Most read genre: " + readXSystem.getMostReadGenre());
         System.out.println("Most read category " + readXSystem.getMostReadCategory());
-
+        System.out.println("Genre Statistics: \n" + readXSystem.soldBooksByGenre());
+        System.out.println("Category Statistics: \n" + readXSystem.activeMagazineSubscriptions());
     }
 }
