@@ -35,6 +35,12 @@ public class Controller {
         products.add(new Magazine("1F4", "El Pepe", 31, new GregorianCalendar(2004, 3, 12), MagazineCategory.SCIENTIFIC, "www.nowoooa.io", 9, MagazineEmissionPeriodicity.DAILY));
     }
 
+    /**
+     * @param userType
+     * @param name
+     * @param id
+     * @return
+     */
     public boolean registerUser(int userType, String name, String id) {
 
         Calendar signUp = Calendar.getInstance();
@@ -53,6 +59,9 @@ public class Controller {
         return false;
     }
 
+    /**
+     * @return
+     */
     public String getUserList() {
 
         String msg = "";
@@ -65,6 +74,21 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * @param productType
+     * @param id
+     * @param name
+     * @param pages
+     * @param review
+     * @param day
+     * @param month
+     * @param year
+     * @param selection
+     * @param url
+     * @param price
+     * @param periodicity
+     * @return
+     */
     public boolean registerBibliographicProduct(int productType, String id, String name, int pages, String review, int day, int month, int year, int selection, String url, double price, int periodicity) {
 
         Calendar newCalendar = new GregorianCalendar(year, month, day);
@@ -124,6 +148,9 @@ public class Controller {
         return false;
     }
 
+    /**
+     * @return
+     */
     public String getProductList() {
 
         String msg = "";
@@ -143,6 +170,10 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * @param position
+     * @return
+     */
     public boolean deleteBibliographicalProduct(int position) {
 
         products.remove(position);
@@ -150,6 +181,10 @@ public class Controller {
         return true;
     }
 
+    /**
+     * @param position
+     * @return
+     */
     public int getBibliographicProductType(int position) {
 
         int type = 0;
@@ -165,6 +200,12 @@ public class Controller {
         return type;
     }
 
+    /**
+     * @param productPosition
+     * @param valueToChange
+     * @param newValue
+     * @return
+     */
     public boolean modifyBibliographicalProduct(int productPosition, int valueToChange, String newValue) {
 
         if (products.get(productPosition) instanceof Book){
@@ -305,6 +346,9 @@ public class Controller {
         return false;
     }
 
+    /**
+     * @return
+     */
     public String getBookList() {
 
         String msg = "";
@@ -319,6 +363,9 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * @return
+     */
     public String setCalendarFormat() {
 
         Calendar calendar = Calendar.getInstance();
@@ -328,6 +375,11 @@ public class Controller {
         return dateFormat.format(date);
     }
 
+    /**
+     * @param userPosition
+     * @param productPosition
+     * @return
+     */
     public String purchaseABook(int userPosition, int productPosition) {
 
         boolean flag = false;
@@ -372,6 +424,9 @@ public class Controller {
         return "Error! Book was not purchased";
     }
 
+    /**
+     * @return
+     */
     public String getMagazineList() {
 
         String msg = "";
@@ -385,6 +440,11 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * @param userPosition
+     * @param productPosition
+     * @return
+     */
     public String subscribeToMagazine(int userPosition, int productPosition) {
 
         boolean flag = false;
@@ -429,6 +489,10 @@ public class Controller {
         return "Error! Subscription failed";
     }
 
+    /**
+     * @param userPosition
+     * @return
+     */
     public ArrayList<BibliographicProduct> sortListDescending(int userPosition) {
 
         ArrayList<BibliographicProduct> librarySorted = new ArrayList<>();
@@ -469,6 +533,10 @@ public class Controller {
         return librarySorted;
     }
 
+    /**
+     * @param user
+     * @return
+     */
     public String[][][] fillMatrix(int user) {
 
         ArrayList<BibliographicProduct> library = sortListDescending(user);
@@ -499,6 +567,11 @@ public class Controller {
         return collection;
     }
 
+    /**
+     * @param userPosition
+     * @param page
+     * @return
+     */
     public String showUserCollection(int userPosition, int page) {
 
 		String print = "";
@@ -523,6 +596,14 @@ public class Controller {
 		return print;
     }
 
+    /**
+     * @param user
+     * @param page
+     * @param currentPage
+     * @param x
+     * @param y
+     * @return
+     */
     public String readingSession(int user, int page, int currentPage, int x, int y) {
 
         String id = fillMatrix(user)[page][x][y];
@@ -557,6 +638,10 @@ public class Controller {
         return session;
     }
 
+    /**
+     * @param user
+     * @return
+     */
     public String getUserMagazineSubscriptionList(int user) {
         
         String msg = "";
@@ -578,6 +663,11 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * @param user
+     * @param magazine
+     * @return
+     */
     public boolean cancelMagazineSubscription(int user, int magazine) {
 
         if (users.get(user) instanceof PremiumUser) {
@@ -589,6 +679,9 @@ public class Controller {
         return true;
     }
 
+    /**
+     * @return
+     */
     public int getBookRedPages() {
 
         int redPages = 0;
@@ -602,6 +695,9 @@ public class Controller {
         return redPages;
     }
 
+    /**
+     * @return
+     */
     public int getMagazineRedPages() {
 
         int redPages = 0;
@@ -615,6 +711,9 @@ public class Controller {
         return redPages;
     }
 
+    /**
+     * @return
+     */
     public String getMostReadGenre() {
 
         String genre = "";
@@ -644,6 +743,9 @@ public class Controller {
         return genre;
     }
 
+    /**
+     * @return
+     */
     public String getMostReadCategory() {
 
         String category = "";
