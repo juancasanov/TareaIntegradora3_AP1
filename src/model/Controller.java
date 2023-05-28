@@ -534,6 +534,11 @@ public class Controller {
 
                 } else if (id.equals(((RegularUser)users.get(user)).getLibrary()[i].getId())) {
                     session = "reading session in progress:\n \nReading: " + ((RegularUser)users.get(user)).getLibrary()[i].getName() + "\n\nReading page " + currentPage +  " of " + ((RegularUser)users.get(user)).getLibrary()[i].getTotalPages() + "\n\n";
+                    for (int c = 0; c < products.size(); c++) {
+                        if (products.get(i) == ((RegularUser)users.get(user)).getLibrary()[i]) {
+                            products.get(i).addRedPage();
+                        }
+                    }
                 }
             }
         } else if (users.get(user) instanceof PremiumUser) {
@@ -542,10 +547,129 @@ public class Controller {
 
                 } else if (id.equals(((PremiumUser)users.get(user)).getLibrary().get(i).getId())) {
                     session = "reading session in progress:\n Reading: " + ((PremiumUser)users.get(user)).getLibrary().get(i).getName() + "\nReading page " + currentPage + " of " + ((PremiumUser)users.get(user)).getLibrary().get(i).getTotalPages() + "\n";
+                    if (products.get(i) == ((PremiumUser)users.get(user)).getLibrary().get(i)) {
+                        products.get(i).addRedPage();
+                    }
                 }                
             }
         }
 
         return session;
+    }
+
+    public String getUserMagazineSubscriptionList(int user) {
+        
+        String msg = "";
+
+        if (users.get(user) instanceof PremiumUser) {
+            for (int i = 0; i < ((PremiumUser)users.get(user)).getLibrary().size(); i++) {
+                if (((PremiumUser)users.get(user)).getLibrary().get(i) instanceof Magazine) {
+                    msg += "\n" + (i + 1) + ") " + ((PremiumUser)users.get(user)).getLibrary().get(i).getId() + " - " + ((PremiumUser)users.get(user)).getLibrary().get(i).getId();
+                }
+            }
+        } else if (users.get(user) instanceof RegularUser) {
+            for (int i = 0; i < ((RegularUser)users.get(user)).getLibrary().length; i++) {
+                if (((RegularUser)users.get(user)).getLibrary()[i] instanceof Magazine) {
+                    msg += "\n" + (i + 1) + ") " + ((RegularUser)users.get(user)).getLibrary()[i].getId() + " - " + ((RegularUser)users.get(user)).getLibrary()[i].getName();
+                }
+            }
+        }
+
+        return msg;
+    }
+
+    public boolean cancelMagazineSubscription(int user, int magazine) {
+
+        if (users.get(user) instanceof PremiumUser) {
+            ((PremiumUser)users.get(user)).getLibrary().remove(magazine);
+        } else if (users.get(user) instanceof RegularUser){
+            ((RegularUser)users.get(user)).getLibrary()[magazine] = null;
+        }
+
+        return true;
+    }
+
+    public int getBookRedPages() {
+
+        int redPages = 0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Book) {
+                redPages += products.get(i).getPagesRed();
+            }
+        }
+
+        return redPages;
+    }
+
+    public int getMagazineRedPages() {
+
+        int redPages = 0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Magazine) {
+                redPages += products.get(i).getPagesRed();
+            }
+        }
+
+        return redPages;
+    }
+
+    public String getMostReadGenre() {
+
+        String genre = "";
+        int a = 0;
+        int b = 0;
+        int c = 0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Book) {
+                if (((Book)products.get(i)).getGenre() == BookGenre.FANTASY) {
+                    a += products.get(i).getPagesRed();
+                } else if (((Book)products.get(i)).getGenre() == BookGenre.HISTORICAL_NOVEL) {
+                    b += products.get(i).getPagesRed();
+                } else if (((Book)products.get(i)).getGenre() == BookGenre.SCI_FI) {
+                    c += products.get(i).getPagesRed();
+                } 
+            }
+        }
+
+        if (a >= b && a >= c) {
+            genre = BookGenre.FANTASY + " (" + a + " pages read)";
+        } else if (b >= a && b >= c) {
+            genre = BookGenre.HISTORICAL_NOVEL + " (" + b + " pages read)";
+        } else if (c >= a && c >= b) {
+            genre = BookGenre.SCI_FI + " (" + c + " pages read)";
+        }
+        return genre;
+    }
+
+    public String getMostReadCategory() {
+
+        String category = "";
+        int a = 0;
+        int b = 0;
+        int c = 0;
+
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Magazine) {
+                if (((Magazine)products.get(i)).getCategory() == MagazineCategory.DESIGN) {
+                    a += products.get(i).getPagesRed();
+                } else if (((Magazine)products.get(i)).getCategory() == MagazineCategory.SCIENTIFIC) {
+                    b += products.get(i).getPagesRed();
+                } else if (((Magazine)products.get(i)).getCategory() == MagazineCategory.VARIETIES) {
+                    c += products.get(i).getPagesRed();
+                } 
+            }
+        }
+
+        if (a >= b && a >= c) {
+            category = MagazineCategory.DESIGN + " (" + a + " pages read)";
+        } else if (b >= a && b >= c) {
+            category = MagazineCategory.SCIENTIFIC + " (" + b + " pages read)";
+        } else if (c >= a && c >= b) {
+            category = MagazineCategory.VARIETIES + " (" + c + " pages read)";
+        }
+        return category;
     }
 }

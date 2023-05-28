@@ -32,8 +32,9 @@ public class Executable {
             System.out.println("2) Manage bibliographic products");
             System.out.println("3) Purchase book");
             System.out.println("4) Subscribe to magazine");
-            System.out.println("5) Acces to user librery");
-            System.out.println("6) Generate real-time reports");
+            System.out.println("5) Cancel subcription");
+            System.out.println("6) Access to user librery");
+            System.out.println("7) Generate real-time reports");
             System.out.println("0) Exit");
             int option = reader.nextInt();
 
@@ -51,16 +52,13 @@ public class Executable {
                     subscribeToMagazine();
                     break;
                 case 5:
-                    showUserCollection();
+                    cancelMagazineSubscription();
                     break;
                 case 6:
-
+                    showUserCollection();
                     break;
                 case 7:
-
-                    break;
-                case 8:
-
+                    reports();
                     break;
                 case 0:
                     flag = true;
@@ -421,5 +419,46 @@ public class Executable {
                 }
             }
         }
+    }
+
+    public void cancelMagazineSubscription() {
+
+        String userQuery = readXSystem.getUserList();
+        
+        if (userQuery.equals("")) {
+            System.out.println("No registered users");
+        } else {
+
+            System.out.print(userQuery);
+            System.out.println("Select a user");
+            int user = reader.nextInt();
+
+            String magazineQuery = readXSystem.getUserMagazineSubscriptionList(user - 1);
+            
+            if (magazineQuery.equals("")) {
+                System.out.println("No active subscriptions");
+            } else {
+
+                System.out.print(magazineQuery);
+                System.out.println("Select a magazine");
+                int magazine = reader.nextInt();
+
+                if (readXSystem.cancelMagazineSubscription(user-1, magazine-1)) {
+                    System.out.println("Subscription cancelled");
+                } else {
+                    System.out.println("Error! Subscription was not cancelled");
+                }
+            }
+        }
+    }
+
+    public void reports() {
+
+        System.out.println("System Reports\n");
+        System.out.println("Read pages of books " + readXSystem.getBookRedPages());
+        System.out.println("Read pages of magazines " + readXSystem.getMagazineRedPages());
+        System.out.println("Most read genre: " + readXSystem.getMostReadGenre());
+        System.out.println("Most read category " + readXSystem.getMostReadCategory());
+
     }
 }

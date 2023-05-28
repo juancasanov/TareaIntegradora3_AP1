@@ -83,4 +83,8 @@ public abstract class BibliographicProduct implements Comparable<BibliographicPr
         
         return this.publicationDate.getTime().compareTo(o.getPublicationDate().getTime());
     }
+
+    public void addRedPage() {
+        this.pagesRed++;
+    }
 }
